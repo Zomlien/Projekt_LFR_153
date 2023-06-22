@@ -1,0 +1,27 @@
+ERROR:root:FEHLER:  Syntaxfehler bei »)«
+LINE 10:             )
+                     ^
+
+ERROR:root:FEHLER:  Syntaxfehler bei »)«
+LINE 10:             )
+                     ^
+
+ERROR:root:FEHLER:  Syntaxfehler bei »)«
+LINE 10:             )
+                     ^
+
+ERROR:root:FEHLER:  Syntaxfehler bei »)«
+LINE 10:             )
+                     ^
+
+ERROR:root:FEHLER:  Syntaxfehler bei »)«
+LINE 11:             );
+                     ^
+
+2023-06-21 22:12:53,416 - ERROR - 'zooApp' object has no attribute 'filename'
+2023-06-21 22:15:52,022 - ERROR - Section postgresql not found in the zoo/database.ini file
+2023-06-21 22:37:45,660 - ERROR - closing tag '[/bold cyan]' at position 26 doesn't match any open tag
+2023-06-21 22:41:03,464 - ERROR - FEHLER:  Spalte »breed_id« von Relation »animal« existiert nicht
+LINE 1: INSERT INTO animal (name, birthday, breed_id, enclosure_id) ...
+                                            ^
+

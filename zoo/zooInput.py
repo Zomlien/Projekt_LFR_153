@@ -1,0 +1,390 @@
+from rich.console import Console
+from zoo.zooApp import zooApp
+from rich.table import Table
+
+console = Console()
+
+class ZooInput:
+    def __init__(self, configfile, section):
+        self.dao = zooApp(configfile, section)
+        self.dao.connect()
+        self.dao.create_tables()
+    
+     
+    def __repr__(self):
+        return ""
+
+
+    # validation
+    def get_valid_input(self, prompt, data_type):
+        while True:
+            value = input(prompt)
+            if len(value.strip()) > 0:
+                try:
+                    if data_type == str:
+                        return str(value)
+                    elif data_type == int:
+                        return int(value)
+                    # If the data type is not supported
+                    print("Error: Invalid data type. Please try again.")
+                except ValueError:
+                    print("Error: Invalid input. Please try again.")
+            else:
+                print("Error: Input cannot be empty. Please try again.")
+    
+    # checks input (menu)
+    def get_user_choice(self):
+        while True:
+            choice = input()
+            try:
+                choice = int(choice)
+                return choice
+            except ValueError:
+                print("Error: Invalid input. Please enter a number.")
+
+    # input menu
+    def display_menu(self):
+        console.print("[bold pink]What would you like to do:[/bold pink]")
+        console.print("1. View all enclosures")
+        console.print("2. View all keepers")
+        console.print("3. View all kategories")
+        console.print("4. View all breeds")
+        console.print("5. View all animals")
+        console.print("6. Search for animal by name")
+        console.print("7. Filter animal breeds by there kategories")
+        console.print("0. Exit")
+        console.print("Enter your choice:")
+
+
+    #enclosures
+    def display_enclosures(self):
+        enclosures = self.dao.view_all_enclosures()
+
+        if len(enclosures) == 0:
+            console.print("No enclosures found.")
+            return
+
+        table = Table(show_header=True, header_style="bold pink")
+        table.add_column("ID")
+        table.add_column("Name")
+        table.add_column("Size")
+
+        for enclosure in enclosures:
+            table.add_row(str(enclosure[0]), enclosure[1], str(enclosure[2]))
+
+        console.print(table)
+
+    def display_menu_enclosures(self):
+        console.print("[bold pink]Menu:  Enclosure:[/bold pink]")
+        console.print("1. Create new enclosure")
+        console.print("2. Edit enclosure")
+        console.print("3. Delete enclosure")
+        console.print("0. Back to main menu")
+        console.print("Enter your choice:")
+
+    #animalkat
+    def display_animalkat(self):
+        animalkats = self.dao.view_all_animalkats()
+
+        if len(animalkats) == 0:
+            console.print("No animalkats found.")
+            return
+
+        table = Table(show_header=True, header_style="bold pink")
+        table.add_column("ID")
+        table.add_column("Kategory")
+
+        for animalkat in animalkats:
+            table.add_row(str(animalkat[0]), animalkat[1])
+
+        console.print(table)
+
+
+    def display_menu_animalkat(self):
+        console.print("[bold pink]Menu:  Kategorie:[/bold pink]")
+        console.print("1. Create new kategorie")
+        console.print("2. Edit kategorie")
+        console.print("3. Delete kategorie")
+        console.print("0. Back to main menu")
+        console.print("Enter your choice:")
+
+    #breed
+    def display_animalbreed(self):
+        animalbreed = self.dao.view_all_animalbreed()
+
+        if len(animalbreed) == 0:
+            console.print("No breeds found.")
+            return
+
+        table = Table(show_header=True, header_style="bold pink")
+        table.add_column("ID")
+        table.add_column("Breed")
+        table.add_column("Animal Kat ID")
+
+        for breed in animalbreed:
+            table.add_row(str(breed[0]), breed[1], str(breed[2]))
+
+        console.print(table)
+
+
+    def display_menu_animal_breeds(self):
+        console.print("[bold pink]Menu:  Breeds:[/bold pink]")
+        console.print("1. Create new animal breed")
+        console.print("2. Edit animal breed")
+        console.print("3. Delete animal breed")
+        console.print("0. Back to main menu")
+        console.print("Enter your choice:")
+
+    #keeper
+    def display_keepers(self):
+        keepers = self.dao.view_all_keepers()
+
+        if len(keepers) == 0:
+            console.print("No keepers found.")
+            return
+
+        table = Table(show_header=True, header_style="bold pink")
+        table.add_column("ID")
+        table.add_column("Name")
+        table.add_column("Enclosure ID")
+
+        for keeper in keepers:
+            table.add_row(str(keeper[0]), keeper[1], str(keeper[2]))
+
+        console.print(table)
+
+
+    def display_menu_keepers(self):
+        console.print("[bold pink]Menu:  Keepers:[/bold pink]")
+        console.print("1. Create new keeper")
+        console.print("2. Edit keeper")
+        console.print("3. Delete keeper")
+        console.print("0. Back to main menu")
+        console.print("Enter your choice:")
+
+    #animal
+    def display_animals(self):
+        animals = self.dao.view_all_animals()
+
+        if len(animals) == 0:
+            console.print("No animals found.")
+            return
+
+        table = Table(show_header=True, header_style="bold pink")
+        table.add_column("ID")
+        table.add_column("Name")
+        table.add_column("Birthday")
+        table.add_column("Breed ID")
+        table.add_column("Enclosure ID")
+
+        for animal in animals:
+            table.add_row(str(animal[0]), animal[1], str(animal[2]), str(animal[3]), str(animal[4]))
+
+        console.print(table)
+
+
+    def display_menu_animals(self):
+        console.print("[bold pink]Menu:  Animals:[/bold pink]")
+        console.print("1. Create new animal")
+        console.print("2. Edit animal")
+        console.print("3. Delete animal")
+        console.print("0. Back to main menu")
+        console.print("Enter your choice:")
+
+    #search
+    def handle_search(self):
+        console.print("Enter the keyword to search.")
+        keyword = self.get_valid_input("Keyword: ", str)
+        results = self.dao.search_animal_name(keyword)
+
+        if len(results) == 0:
+            console.print("No matching animals found.")
+            return
+
+        table = Table(show_header=True, header_style="bold pink")
+        table.add_column("ID")
+        table.add_column("Name")
+        table.add_column("Birthday")
+        table.add_column("Breed")
+        table.add_column("Enclosure")
+
+        for result in results:
+            animal_id, name, birthday, breed, enclosure = result
+            table.add_row(str(animal_id), name, str(birthday), breed, str(enclosure))
+
+        console.print(table)
+
+    
+    #filter
+    def handle_filter(self):
+        console.print("Enter animal category (kat) ID to filter by.")
+        kat_id = self.get_valid_input("ID: ", int)
+        breeds = self.dao.filter_breeds_by_category(kat_id)
+
+        if len(breeds) == 0:
+            console.print("No matching breeds found.")
+            return
+
+        table = Table(show_header=True, header_style="bold pink")
+        table.add_column("ID")
+        table.add_column("Breed")
+        table.add_column("Animal Category")
+
+        for breed in breeds:
+            breed_id = str(breed[0])
+            breed_name = breed[1]
+            animal_category = self.dao.get_category_by_id(kat_id)
+
+            table.add_row(breed_id, breed_name, animal_category)
+
+        console.print(table)
+
+
+    
+
+
+    #big menu
+    def run(self):
+        print(self.dao)
+        while True:
+            self.display_menu()
+            choice = self.get_user_choice()
+            if choice == 1:
+                self.display_enclosures()
+                self.display_menu_enclosures()
+                enclosure_choice = self.get_user_choice()
+                
+                if enclosure_choice == 1:
+                    name = self.get_valid_input("Enter the name of the enclosure: ", str)
+                    size = self.get_valid_input("Enter the size in m2 of the enclosure: ", int)
+                    self.dao.add_enclosure(name, size)
+                    
+                elif enclosure_choice == 2:
+                    enclosure_id = self.get_valid_input("Enter the ID of the enclosure to edit: ", int)
+                    name = self.get_valid_input("Enter the new name of the enclosure: ", str)
+                    size = self.get_valid_input("Enter the new size of the enclosure in m2: ", int)
+                    self.dao.edit_enclosure(enclosure_id, name, size)
+                    
+                elif enclosure_choice == 3:
+                    enclosure_id = self.get_valid_input("Enter the ID of the enclosure to delete: ", int)
+                    self.dao.delete_enclosure(enclosure_id)
+                    
+                elif enclosure_choice == 0:
+                    continue
+                    
+                else:
+                    console.print("Invalid choice. Please try again.")
+            if choice == 2:
+                self.display_animalkats()
+                self.display_menu_animalkats()
+                animalkat_choice = self.get_user_choice()
+                
+                if animalkat_choice == 1:
+                    kategory = self.get_valid_input("Enter the kategory of the category: ", str)
+                    self.dao.add_animalkat(kategory)
+                    
+                elif animalkat_choice == 2:
+                    animalkat_id = self.get_valid_input("Enter the ID of the category to edit: ", int)
+                    kategory = self.get_valid_input("Enter the new category: ", str)
+                    self.dao.edit_animalkat(animalkat_id, kategory)
+                    
+                elif animalkat_choice == 3:
+                    animalkat_id = self.get_valid_input("Enter the ID of the category to delete: ", int)
+                    self.dao.delete_animalkat(animalkat_id)
+                    
+                elif animalkat_choice == 0:
+                    continue
+                    
+                else:
+                    console.print("Invalid choice. Please try again.")
+            if choice == 3:
+                self.display_animalbreeds()
+                self.display_menu_animalbreeds()
+                animalbreed_choice = self.get_user_choice()
+                
+                if animalbreed_choice == 1:
+                    breed = self.get_valid_input("Enter the breed: ", str)
+                    animalkat_id = self.get_valid_input("Enter the ID of the associated category: ", int)
+                    self.dao.add_animalbreed(breed, animalkat_id)
+                    
+                elif animalbreed_choice == 2:
+                    animalbreed_id = self.get_valid_input("Enter the ID of the breed to edit: ", int)
+                    breed = self.get_valid_input("Enter the new breed: ", str)
+                    animalkat_id = self.get_valid_input("Enter the new associated Category ID: ", int)
+                    self.dao.edit_animalbreed(animalbreed_id, breed, animalkat_id)
+                    
+                elif animalbreed_choice == 3:
+                    animalbreed_id = self.get_valid_input("Enter the ID of the breed to delete: ", int)
+                    self.dao.delete_animalbreed(animalbreed_id)
+                    
+                elif animalbreed_choice == 0:
+                    continue
+                    
+                else:
+                    console.print("Invalid choice. Please try again.")
+            if choice == 4:
+                self.display_keepers()
+                self.display_menu_keepers()
+                keeper_choice = self.get_user_choice()
+                
+                if keeper_choice == 1:
+                    name = self.get_valid_input("Enter the name of the keeper: ", str)
+                    enclosure_id = self.get_valid_input("Enter the ID of the enclosure: ", int)
+                    self.dao.add_keeper(name, enclosure_id)
+                    
+                elif keeper_choice == 2:
+                    keeper_id = self.get_valid_input("Enter the ID of the keeper to edit: ", int)
+                    name = self.get_valid_input("Enter the new name: ", str)
+                    enclosure_id = self.get_valid_input("Enter the new ID of the enclosure: ", int)
+                    self.dao.edit_keeper(keeper_id, name, enclosure_id)
+                    
+                elif keeper_choice == 3:
+                    keeper_id = self.get_valid_input("Enter the ID of the keeper to delete: ", int)
+                    self.dao.delete_keeper(keeper_id)
+                    
+                elif keeper_choice == 0:
+                    continue       
+                else:
+                    console.print("Invalid choice. Please try again.")
+            if choice == 5:
+                self.display_animals()
+                self.display_menu_animals()
+                animal_choice = self.get_user_choice()
+                
+                if animal_choice == 1:
+                    name = self.get_valid_input("Enter the name of the animal: ", str)
+                    birthday = self.get_valid_input("Enter the birthday of the animal (YYYY-MM-DD): ", str)
+                    breed_id = self.get_valid_input("Enter the ID of the animal breed: ", int)
+                    enclosure_id = self.get_valid_input("Enter the ID of the enclosure: ", int)
+                    self.dao.add_animal(name, birthday, breed_id, enclosure_id)
+                    
+                elif animal_choice == 2:
+                    animal_id = self.get_valid_input("Enter the ID of the animal to edit: ", int)
+                    name = self.get_valid_input("Enter the new name: ", str)
+                    birthday = self.get_valid_input("Enter the new birthday (YYYY-MM-DD): ", str)
+                    breed_id = self.get_valid_input("Enter the new ID of the animal breed: ", int)
+                    enclosure_id = self.get_valid_input("Enter the new ID of the enclosure: ", int)
+                    self.dao.edit_animal(animal_id, name, birthday, breed_id, enclosure_id)
+                    
+                elif animal_choice == 3:
+                    animal_id = self.get_valid_input("Enter the ID of the animal to delete: ", int)
+                    self.dao.delete_animal(animal_id)
+                    
+                elif animal_choice == 0:
+                    continue
+                else:
+                    console.print("Invalid choice. Please try again.")
+            elif choice == 6:
+                self.handle_search()
+            elif choice == 7:
+                self.display_locations()
+                self.handle_filter()
+            elif choice == 0:
+                console.print('🐊See you later alligator🐊')
+                break
+            else:
+                console.print("Invalid choice. Please try again.")
+                console.print("Exiting...")
+
+    
+
