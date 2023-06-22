@@ -44,14 +44,14 @@ class ZooInput:
 
     # input menu
     def display_menu(self):
-        console.print("[bold pink]What would you like to do:[/bold pink]")
+        console.print("[bold magenta]What would you like to do:[/bold magenta]")
         console.print("1. View all enclosures")
-        console.print("2. View all keepers")
-        console.print("3. View all kategories")
-        console.print("4. View all breeds")
+        console.print("2. View all categories")
+        console.print("3. View all breeds")
+        console.print("4. View all keepers")
         console.print("5. View all animals")
-        console.print("6. Search for animal by name")
-        console.print("7. Filter animal breeds by there kategories")
+        console.print("6. Search for animal by ID")
+        console.print("7. Filter animal breeds by their categories")
         console.print("0. Exit")
         console.print("Enter your choice:")
 
@@ -64,7 +64,7 @@ class ZooInput:
             console.print("No enclosures found.")
             return
 
-        table = Table(show_header=True, header_style="bold pink")
+        table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
         table.add_column("Name")
         table.add_column("Size")
@@ -75,7 +75,7 @@ class ZooInput:
         console.print(table)
 
     def display_menu_enclosures(self):
-        console.print("[bold pink]Menu:  Enclosure:[/bold pink]")
+        console.print("[bold magenta]Menu:  Enclosure:[/bold magenta]")
         console.print("1. Create new enclosure")
         console.print("2. Edit enclosure")
         console.print("3. Delete enclosure")
@@ -83,14 +83,14 @@ class ZooInput:
         console.print("Enter your choice:")
 
     #animalkat
-    def display_animalkat(self):
+    def display_animalkats(self):
         animalkats = self.dao.view_all_animalkats()
 
         if len(animalkats) == 0:
             console.print("No animalkats found.")
             return
 
-        table = Table(show_header=True, header_style="bold pink")
+        table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
         table.add_column("Kategory")
 
@@ -100,8 +100,8 @@ class ZooInput:
         console.print(table)
 
 
-    def display_menu_animalkat(self):
-        console.print("[bold pink]Menu:  Kategorie:[/bold pink]")
+    def display_menu_animalkats(self):
+        console.print("[bold magenta]Menu:  Kategorie:[/bold magenta]")
         console.print("1. Create new kategorie")
         console.print("2. Edit kategorie")
         console.print("3. Delete kategorie")
@@ -116,7 +116,7 @@ class ZooInput:
             console.print("No breeds found.")
             return
 
-        table = Table(show_header=True, header_style="bold pink")
+        table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
         table.add_column("Breed")
         table.add_column("Animal Kat ID")
@@ -127,8 +127,8 @@ class ZooInput:
         console.print(table)
 
 
-    def display_menu_animal_breeds(self):
-        console.print("[bold pink]Menu:  Breeds:[/bold pink]")
+    def display_menu_animalbreed(self):
+        console.print("[bold magenta]Menu:  Breeds:[/bold magenta]")
         console.print("1. Create new animal breed")
         console.print("2. Edit animal breed")
         console.print("3. Delete animal breed")
@@ -143,7 +143,7 @@ class ZooInput:
             console.print("No keepers found.")
             return
 
-        table = Table(show_header=True, header_style="bold pink")
+        table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
         table.add_column("Name")
         table.add_column("Enclosure ID")
@@ -155,7 +155,7 @@ class ZooInput:
 
 
     def display_menu_keepers(self):
-        console.print("[bold pink]Menu:  Keepers:[/bold pink]")
+        console.print("[bold magenta]Menu:  Keepers:[/bold magenta]")
         console.print("1. Create new keeper")
         console.print("2. Edit keeper")
         console.print("3. Delete keeper")
@@ -170,7 +170,7 @@ class ZooInput:
             console.print("No animals found.")
             return
 
-        table = Table(show_header=True, header_style="bold pink")
+        table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
         table.add_column("Name")
         table.add_column("Birthday")
@@ -184,7 +184,7 @@ class ZooInput:
 
 
     def display_menu_animals(self):
-        console.print("[bold pink]Menu:  Animals:[/bold pink]")
+        console.print("[bold magenta]Menu:  Animals:[/bold magenta]")
         console.print("1. Create new animal")
         console.print("2. Edit animal")
         console.print("3. Delete animal")
@@ -193,7 +193,7 @@ class ZooInput:
 
     #search
     def handle_search(self):
-        console.print("Enter the keyword to search.")
+        console.print("Enter the Animal ID to search.")
         keyword = self.get_valid_input("Keyword: ", str)
         results = self.dao.search_animal_name(keyword)
 
@@ -201,7 +201,7 @@ class ZooInput:
             console.print("No matching animals found.")
             return
 
-        table = Table(show_header=True, header_style="bold pink")
+        table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
         table.add_column("Name")
         table.add_column("Birthday")
@@ -225,7 +225,7 @@ class ZooInput:
             console.print("No matching breeds found.")
             return
 
-        table = Table(show_header=True, header_style="bold pink")
+        table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
         table.add_column("Breed")
         table.add_column("Animal Category")
@@ -280,7 +280,7 @@ class ZooInput:
                 animalkat_choice = self.get_user_choice()
                 
                 if animalkat_choice == 1:
-                    kategory = self.get_valid_input("Enter the kategory of the category: ", str)
+                    kategory = self.get_valid_input("Enter the name of the category: ", str)
                     self.dao.add_animalkat(kategory)
                     
                 elif animalkat_choice == 2:
@@ -298,8 +298,8 @@ class ZooInput:
                 else:
                     console.print("Invalid choice. Please try again.")
             if choice == 3:
-                self.display_animalbreeds()
-                self.display_menu_animalbreeds()
+                self.display_animalbreed()
+                self.display_menu_animalbreed()
                 animalbreed_choice = self.get_user_choice()
                 
                 if animalbreed_choice == 1:
@@ -377,14 +377,12 @@ class ZooInput:
             elif choice == 6:
                 self.handle_search()
             elif choice == 7:
-                self.display_locations()
                 self.handle_filter()
             elif choice == 0:
                 console.print('🐊See you later alligator🐊')
                 break
             else:
-                console.print("Invalid choice. Please try again.")
-                console.print("Exiting...")
+                console.print("...")
 
     
 

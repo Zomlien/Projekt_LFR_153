@@ -25,3 +25,91 @@ LINE 11:             );
 LINE 1: INSERT INTO animal (name, birthday, breed_id, enclosure_id) ...
                                             ^
 
+2023-06-22 22:46:25,559 - ERROR - 'ZooInput' object has no attribute 'display_animalbreeds'
+2023-06-22 22:46:37,744 - ERROR - Failed to get style 'bold pink'; unable to parse 'pink' as color; 'pink' is not a valid color
+2023-06-22 22:47:21,238 - ERROR - 'ZooInput' object has no attribute 'display_animalbreeds'
+2023-06-22 22:48:35,673 - ERROR - 'zooApp' object has no attribute 'view_all_animalbreed'
+2023-06-22 22:49:12,550 - ERROR - 'ZooInput' object has no attribute 'display_menu_animalbreed'
+2023-06-22 22:50:07,575 - ERROR - 'ZooInput' object has no attribute 'display_menu_animalbreed'
+2023-06-22 22:50:24,642 - ERROR - 'ZooInput' object has no attribute 'display_menu_animalbreed'
+2023-06-22 22:50:53,144 - ERROR - FEHLER:  Spalte »animalkat_id« von Relation »animalbreed« existiert nicht
+LINE 1: INSERT INTO animalbreed (breed, animalkat_id) VALUES ('Tiger...
+                                        ^
+
+2023-06-22 22:51:08,719 - ERROR - FEHLER:  Spalte »keeper_id« existiert nicht
+LINE 1: ...(name, enclosure_id) VALUES ('Trudi', 2) RETURNING keeper_id
+                                                              ^
+HINT:  Vielleicht wurde beabsichtigt, auf die Spalte »keeper.kepper_id« zu verweisen.
+
+2023-06-22 22:52:13,273 - ERROR - FEHLER:  Spalte »breed_id« von Relation »animal« existiert nicht
+LINE 1: INSERT INTO animal (name, birthday, breed_id, enclosure_id) ...
+                                            ^
+
+2023-06-22 23:07:39,323 - ERROR - 'ZooInput' object has no attribute 'display_animalkats'
+2023-06-22 23:07:53,866 - ERROR - 'ZooInput' object has no attribute 'display_animalkats'
+2023-06-22 23:09:31,949 - ERROR - FEHLER:  Spalte keeper.keeper_id existiert nicht
+LINE 1: ...name, enclosure_id) VALUES ('trudi', 2) RETURNING keeper.kee...
+                                                             ^
+HINT:  Vielleicht wurde beabsichtigt, auf die Spalte »keeper.kepper_id« zu verweisen.
+
+2023-06-22 23:10:29,132 - ERROR - FEHLER:  Spalte keeper.keeper_id existiert nicht
+LINE 1: ...name, enclosure_id) VALUES ('trudi', 2) RETURNING keeper.kee...
+                                                             ^
+HINT:  Vielleicht wurde beabsichtigt, auf die Spalte »keeper.kepper_id« zu verweisen.
+
+2023-06-22 23:10:58,340 - ERROR - FEHLER:  fehlender Eintrag in FROM-Klausel für Tabelle »kepper«
+LINE 1: ...name, enclosure_id) VALUES ('trudi', 2) RETURNING kepper.kee...
+                                                             ^
+
+2023-06-22 23:19:07,732 - ERROR - FEHLER:  fehlender Eintrag in FROM-Klausel für Tabelle »kepper«
+LINE 1: ...name, enclosure_id) VALUES ('trudi', 2) RETURNING kepper.kee...
+                                                             ^
+
+2023-06-22 23:20:16,944 - ERROR - FEHLER:  Spalte »breed_id« von Relation »animal« existiert nicht
+LINE 1: INSERT INTO animal (name, birthday, breed_id, enclosure_id) ...
+                                            ^
+
+2023-06-22 23:21:01,418 - ERROR - FEHLER:  Spalte »keeper_id« existiert nicht
+LINE 1: ... (name, enclosure_id) VALUES ('fgfg', 2) RETURNING keeper_id
+                                                              ^
+HINT:  Vielleicht wurde beabsichtigt, auf die Spalte »keeper.kepper_id« zu verweisen.
+
+2023-06-22 23:23:36,768 - ERROR - FEHLER:  Spalte »keeper_id« existiert nicht
+LINE 1: ... (name, enclosure_id) VALUES ('wert', 1) RETURNING keeper_id
+                                                              ^
+HINT:  Vielleicht wurde beabsichtigt, auf die Spalte »keeper.kepper_id« zu verweisen.
+
+2023-06-22 23:27:20,199 - ERROR - FEHLER:  Einfügen oder Aktualisieren in Tabelle »keeper« verletzt Fremdschlüssel-Constraint »keeper_enclosure_id_fkey«
+DETAIL:  Schlüssel (enclosure_id)=(1) ist nicht in Tabelle »enclosure« vorhanden.
+
+2023-06-22 23:29:39,491 - ERROR - FEHLER:  Einfügen oder Aktualisieren in Tabelle »animalbreed« verletzt Fremdschlüssel-Constraint »animalbreed_animalkat_id_fkey«
+DETAIL:  Schlüssel (animalkat_id)=(1) ist nicht in Tabelle »animalkat« vorhanden.
+
+2023-06-22 23:29:46,456 - ERROR - 'ZooInput' object has no attribute 'display_animalkats'
+2023-06-22 23:30:34,453 - ERROR - 'ZooInput' object has no attribute 'display_menu_animalkats'
+2023-06-22 23:33:20,173 - ERROR - FEHLER:  Spalte »breed_id« von Relation »animal« existiert nicht
+LINE 1: INSERT INTO animal (name, birthday, breed_id, enclosure_id) ...
+                                            ^
+
+2023-06-22 23:38:39,002 - ERROR - FEHLER:  Einfügen oder Aktualisieren in Tabelle »animal« verletzt Fremdschlüssel-Constraint »animal_animalbreed_id_fkey«
+DETAIL:  Schlüssel (animalbreed_id)=(1) ist nicht in Tabelle »animalbreed« vorhanden.
+
+2023-06-22 23:41:46,493 - ERROR - FEHLER:  Einfügen oder Aktualisieren in Tabelle »animal« verletzt Fremdschlüssel-Constraint »animal_animalbreed_id_fkey«
+DETAIL:  Schlüssel (animalbreed_id)=(1) ist nicht in Tabelle »animalbreed« vorhanden.
+
+2023-06-22 23:43:07,400 - ERROR - 'zooApp' object has no attribute 'search_animal_name'
+2023-06-22 23:43:51,349 - ERROR - unable to render int; a string or other renderable object is required
+2023-06-22 23:45:25,310 - ERROR - unable to render int; a string or other renderable object is required
+2023-06-22 23:48:25,782 - ERROR - 'ZooInput' object has no attribute 'display_locations'
+2023-06-22 23:49:29,506 - ERROR - FEHLER:  Operator existiert nicht: character varying = integer
+LINE 5:             WHERE animalkat.kategory = 1
+                                             ^
+HINT:  Kein Operator stimmt mit dem angegebenen Namen und den Argumenttypen überein. Sie müssen möglicherweise ausdrückliche Typumwandlungen hinzufügen.
+
+2023-06-22 23:53:42,183 - ERROR - FEHLER:  Operator existiert nicht: character varying = integer
+LINE 5:             WHERE animalkat.kategory = 1
+                                             ^
+HINT:  Kein Operator stimmt mit dem angegebenen Namen und den Argumenttypen überein. Sie müssen möglicherweise ausdrückliche Typumwandlungen hinzufügen.
+
+2023-06-22 23:53:56,157 - ERROR - FEHLER:  aktuelle Transaktion wurde abgebrochen, Befehle werden bis zum Ende der Transaktion ignoriert
+

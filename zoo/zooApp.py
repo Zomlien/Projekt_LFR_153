@@ -34,36 +34,36 @@ class zooApp(ConfigReader):
     def create_tables(self) -> None:
         encolsuresql = """
             CREATE TABLE IF NOT EXISTS enclosure(
-                ENCLOSURE_ID               SERIAL PRIMARY KEY,
+                enclosure_id               SERIAL PRIMARY KEY,
                 name                       VARCHAR(100),
                 size                       INT
             )"""
 
         katsql = """
             CREATE TABLE IF NOT EXISTS animalkat(
-                ANIMALKAT_ID              SERIAL PRIMARY KEY,
+                animalkat_id            SERIAL PRIMARY KEY,
                 kategory                  VARCHAR(100)              
             );"""
         breedsql="""
             CREATE TABLE IF NOT EXISTS animalbreed(
-                ANIMALBREED_ID             SERIAL PRIMARY KEY,
+                animalbreed_id             SERIAL PRIMARY KEY,
                 breed                      VARCHAR(100),
-                ANMIALKAT_ID               INTEGER REFERENCES animalkat(ANIMALKAT_ID) ON DELETE CASCADE
+                animalkat_id               INTEGER REFERENCES animalkat(animalkat_id) ON DELETE CASCADE
             );"""
         
         keepersql="""
             CREATE TABLE IF NOT EXISTS keeper(
-                KEPPER_ID                  SERIAL PRIMARY KEY,
+                keeper_id                  SERIAL PRIMARY KEY,
                 name                       VARCHAR(100),
-                ENCLOSURE_ID               INTEGER REFERENCES enclosure(ENCLOSURE_ID) ON DELETE CASCADE
+                enclosure_id               INTEGER REFERENCES enclosure(enclosure_id ) ON DELETE CASCADE
             );"""
         animalsql="""
             CREATE TABLE IF NOT EXISTS animal(
-                ANIMAL_ID                  SERIAL PRIMARY KEY,
+                animal_id                  SERIAL PRIMARY KEY,
                 name                       VARCHAR(100),
                 birthday                   date,
-                ANIMALBREED_ID             INTEGER REFERENCES animalbreed(ANIMALBREED_ID) ON DELETE CASCADE,
-                ENCLOSURE_ID               INTEGER REFERENCES enclosure(ENCLOSURE_ID) ON DELETE CASCADE
+                animalbreed_id            INTEGER REFERENCES animalbreed(animalbreed_id) ON DELETE CASCADE,
+                enclosure_id               INTEGER REFERENCES enclosure(enclosure_id ) ON DELETE CASCADE
             );"""
 
         try:
@@ -208,12 +208,12 @@ class zooApp(ConfigReader):
 
 
     #CRUD breed
-    def view_all_animalbreeds(self):
+    def view_all_animalbreed(self):
         sql = "SELECT * FROM animalbreed"
         try:
             self.cur.execute(sql)
-            animalbreeds = self.cur.fetchall()
-            return animalbreeds
+            animalbreed = self.cur.fetchall()
+            return animalbreed
         except psycopg2.Error as e:
             logging.error(e)
             print("Error occurred while retrieving animal breeds.")
@@ -349,7 +349,7 @@ class zooApp(ConfigReader):
 
 
     def add_animal(self, name, birthday, breed_id, enclosure_id):
-        sql = "INSERT INTO animal (name, birthday, breed_id, enclosure_id) VALUES (%s, %s, %s, %s) RETURNING animal_id"
+        sql = "INSERT INTO animal (name, birthday, animalbreed_id, enclosure_id) VALUES (%s, %s, %s, %s) RETURNING animal_id"
         try:
             self.cur.execute(sql, (name, birthday, breed_id, enclosure_id))
             self.conn.commit()
@@ -362,7 +362,7 @@ class zooApp(ConfigReader):
 
 
     def edit_animal(self, animal_id, name, birthday, breed_id, enclosure_id):
-        sql = "UPDATE animal SET name = %s, birthday = %s, breed_id = %s, enclosure_id = %s WHERE animal_id = %s"
+        sql = "UPDATE animal SET name = %s, birthday = %s, animalbreed_id = %s, enclosure_id = %s WHERE animal_id = %s"
         try:
             self.cur.execute(sql, (name, birthday, breed_id, enclosure_id, animal_id))
             self.conn.commit()
@@ -386,7 +386,7 @@ class zooApp(ConfigReader):
 
 
     def get_animal_by_id(self, animal_id):
-        sql = "SELECT name, birthday, breed_id, enclosure_id FROM animal WHERE animal_id = %s"
+        sql = "SELECT name, birthday, animalbreed_id, enclosure_id FROM animal WHERE animal_id = %s"
         try:
             self.cur.execute(sql, (animal_id,))
             result = self.cur.fetchone()
@@ -400,7 +400,7 @@ class zooApp(ConfigReader):
             return "N/A", "N/A", "N/A", "N/A"
 
     #search function animal name
-    def search_animal_by_name(self, name):
+    def search_animal_name(self, name):
         sql = "SELECT * FROM animal WHERE name ILIKE %s"
         try:
             self.cur.execute(sql, ('%' + name + '%',))
