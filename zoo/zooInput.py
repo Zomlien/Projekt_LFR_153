@@ -82,29 +82,29 @@ class ZooInput:
         console.print("0. Back to main menu")
         console.print("Enter your choice:")
 
-    #animalkat
-    def display_animalkats(self):
-        animalkats = self.dao.view_all_animalkats()
+    #animalcat
+    def display_animalcats(self):
+        animalcats = self.dao.view_all_animalcats()
 
-        if len(animalkats) == 0:
-            console.print("No animalkats found.")
+        if len(animalcats) == 0:
+            console.print("No animalcats found.")
             return
 
         table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
-        table.add_column("Kategory")
+        table.add_column("category")
 
-        for animalkat in animalkats:
-            table.add_row(str(animalkat[0]), animalkat[1])
+        for animalcat in animalcats:
+            table.add_row(str(animalcat[0]), animalcat[1])
 
         console.print(table)
 
 
-    def display_menu_animalkats(self):
-        console.print("[bold magenta]Menu:  Kategorie:[/bold magenta]")
-        console.print("1. Create new kategorie")
-        console.print("2. Edit kategorie")
-        console.print("3. Delete kategorie")
+    def display_menu_animalcats(self):
+        console.print("[bold magenta]Menu:  categorie:[/bold magenta]")
+        console.print("1. Create new categorie")
+        console.print("2. Edit categorie")
+        console.print("3. Delete categorie")
         console.print("0. Back to main menu")
         console.print("Enter your choice:")
 
@@ -119,7 +119,7 @@ class ZooInput:
         table = Table(show_header=True, header_style="bold magenta")
         table.add_column("ID")
         table.add_column("Breed")
-        table.add_column("Animal Kat ID")
+        table.add_column("Animal cat ID")
 
         for breed in animalbreed:
             table.add_row(str(breed[0]), breed[1], str(breed[2]))
@@ -210,16 +210,17 @@ class ZooInput:
 
         for result in results:
             animal_id, name, birthday, breed, enclosure = result
-            table.add_row(str(animal_id), name, str(birthday), breed, str(enclosure))
+            table.add_row(str(animal_id), name, str(birthday), str(breed), str(enclosure))
 
         console.print(table)
 
-    
+
     #filter
     def handle_filter(self):
-        console.print("Enter animal category (kat) ID to filter by.")
-        kat_id = self.get_valid_input("ID: ", int)
-        breeds = self.dao.filter_breeds_by_category(kat_id)
+        console = Console()
+        console.print("Enter animal category name to filter by.")
+        category_name = input("Category Name: ")
+        breeds = self.dao.filter_breeds_by_category(category_name)
 
         if len(breeds) == 0:
             console.print("No matching breeds found.")
@@ -233,14 +234,11 @@ class ZooInput:
         for breed in breeds:
             breed_id = str(breed[0])
             breed_name = breed[1]
-            animal_category = self.dao.get_category_by_id(kat_id)
+            animal_category = self.dao.get_category_by_name(category_name)  # Assuming you have a method to get the category name
 
             table.add_row(breed_id, breed_name, animal_category)
 
         console.print(table)
-
-
-    
 
 
     #big menu
@@ -275,24 +273,24 @@ class ZooInput:
                 else:
                     console.print("Invalid choice. Please try again.")
             if choice == 2:
-                self.display_animalkats()
-                self.display_menu_animalkats()
-                animalkat_choice = self.get_user_choice()
+                self.display_animalcats()
+                self.display_menu_animalcats()
+                animalcat_choice = self.get_user_choice()
                 
-                if animalkat_choice == 1:
-                    kategory = self.get_valid_input("Enter the name of the category: ", str)
-                    self.dao.add_animalkat(kategory)
+                if animalcat_choice == 1:
+                    category = self.get_valid_input("Enter the name of the category: ", str)
+                    self.dao.add_animalcat(category)
                     
-                elif animalkat_choice == 2:
-                    animalkat_id = self.get_valid_input("Enter the ID of the category to edit: ", int)
-                    kategory = self.get_valid_input("Enter the new category: ", str)
-                    self.dao.edit_animalkat(animalkat_id, kategory)
+                elif animalcat_choice == 2:
+                    animalcat_id = self.get_valid_input("Enter the ID of the category to edit: ", int)
+                    category = self.get_valid_input("Enter the new category: ", str)
+                    self.dao.edit_animalcat(animalcat_id, category)
                     
-                elif animalkat_choice == 3:
-                    animalkat_id = self.get_valid_input("Enter the ID of the category to delete: ", int)
-                    self.dao.delete_animalkat(animalkat_id)
+                elif animalcat_choice == 3:
+                    animalcat_id = self.get_valid_input("Enter the ID of the category to delete: ", int)
+                    self.dao.delete_animalcat(animalcat_id)
                     
-                elif animalkat_choice == 0:
+                elif animalcat_choice == 0:
                     continue
                     
                 else:
@@ -304,14 +302,14 @@ class ZooInput:
                 
                 if animalbreed_choice == 1:
                     breed = self.get_valid_input("Enter the breed: ", str)
-                    animalkat_id = self.get_valid_input("Enter the ID of the associated category: ", int)
-                    self.dao.add_animalbreed(breed, animalkat_id)
+                    animalcat_id = self.get_valid_input("Enter the ID of the associated category: ", int)
+                    self.dao.add_animalbreed(breed, animalcat_id)
                     
                 elif animalbreed_choice == 2:
                     animalbreed_id = self.get_valid_input("Enter the ID of the breed to edit: ", int)
                     breed = self.get_valid_input("Enter the new breed: ", str)
-                    animalkat_id = self.get_valid_input("Enter the new associated Category ID: ", int)
-                    self.dao.edit_animalbreed(animalbreed_id, breed, animalkat_id)
+                    animalcat_id = self.get_valid_input("Enter the new associated Category ID: ", int)
+                    self.dao.edit_animalbreed(animalbreed_id, breed, animalcat_id)
                     
                 elif animalbreed_choice == 3:
                     animalbreed_id = self.get_valid_input("Enter the ID of the breed to delete: ", int)

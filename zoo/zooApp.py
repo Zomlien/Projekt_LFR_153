@@ -39,16 +39,16 @@ class zooApp(ConfigReader):
                 size                       INT
             )"""
 
-        katsql = """
-            CREATE TABLE IF NOT EXISTS animalkat(
-                animalkat_id            SERIAL PRIMARY KEY,
-                kategory                  VARCHAR(100)              
+        catsql = """
+            CREATE TABLE IF NOT EXISTS animalcat(
+                animalcat_id            SERIAL PRIMARY KEY,
+                category                  VARCHAR(100)              
             );"""
         breedsql="""
             CREATE TABLE IF NOT EXISTS animalbreed(
                 animalbreed_id             SERIAL PRIMARY KEY,
                 breed                      VARCHAR(100),
-                animalkat_id               INTEGER REFERENCES animalkat(animalkat_id) ON DELETE CASCADE
+                animalcat_id               INTEGER REFERENCES animalcat(animalcat_id) ON DELETE CASCADE
             );"""
         
         keepersql="""
@@ -68,7 +68,7 @@ class zooApp(ConfigReader):
 
         try:
             self.cur.execute(encolsuresql)
-            self.cur.execute(katsql)
+            self.cur.execute(catsql)
             self.cur.execute(breedsql)
             self.cur.execute(keepersql)
             self.cur.execute(animalsql)
@@ -142,60 +142,60 @@ class zooApp(ConfigReader):
             return "N/A"
 
 
-    #CRUD kat
-    def view_all_animalkats(self):
-        sql = "SELECT * FROM animalkat"
+    #CRUD cat
+    def view_all_animalcats(self):
+        sql = "SELECT * FROM animalcat"
         try:
             self.cur.execute(sql)
-            animalkats = self.cur.fetchall()
-            return animalkats
+            animalcats = self.cur.fetchall()
+            return animalcats
         except psycopg2.Error as e:
             logging.error(e)
-            print("Error occurred while retrieving animal kategories.")
+            print("Error occurred while retrieving animal categorys.")
             return []
 
 
-    def add_animalkat(self, kategory):
-        sql = "INSERT INTO animalkat (kategory) VALUES (%s) RETURNING animalkat_id"
+    def add_animalcat(self, category):
+        sql = "INSERT INTO animalcat (category) VALUES (%s) RETURNING animalcat_id"
         try:
-            self.cur.execute(sql, (kategory,))
+            self.cur.execute(sql, (category,))
             self.conn.commit()
-            animalkat_id = self.cur.fetchone()[0]
-            print(f"Animal kategory with ID {animalkat_id} added successfully.")
+            animalcat_id = self.cur.fetchone()[0]
+            print(f"Animal category with ID {animalcat_id} added successfully.")
         except psycopg2.Error as e:
             logging.error(e)
             self.conn.rollback()
-            print("Error occurred while adding animal kategory.")
+            print("Error occurred while adding animal category.")
 
 
-    def edit_animalkat(self, animalkat_id, kategory):
-        sql = "UPDATE animalkat SET kategory = %s WHERE animalkat_id = %s"
+    def edit_animalcat(self, animalcat_id, category):
+        sql = "UPDATE animalcat SET category = %s WHERE animalcat_id = %s"
         try:
-            self.cur.execute(sql, (kategory, animalkat_id))
+            self.cur.execute(sql, (category, animalcat_id))
             self.conn.commit()
-            print(f"Animal kategory with ID {animalkat_id} updated successfully.")
+            print(f"Animal category with ID {animalcat_id} updated successfully.")
         except psycopg2.Error as e:
             logging.error(e)
             self.conn.rollback()
-            print("Error occurred while editing animal kategory.")
+            print("Error occurred while editing animal category.")
 
 
-    def delete_animalkat(self, animalkat_id):
-        sql = "DELETE FROM animalkat WHERE animalkat_id = %s"
+    def delete_animalcat(self, animalcat_id):
+        sql = "DELETE FROM animalcat WHERE animalcat_id = %s"
         try:
-            self.cur.execute(sql, (animalkat_id,))
+            self.cur.execute(sql, (animalcat_id,))
             self.conn.commit()
-            print(f"Animal kategory with ID {animalkat_id} deleted successfully.")
+            print(f"Animal category with ID {animalcat_id} deleted successfully.")
         except psycopg2.Error as e:
             logging.error(e)
             self.conn.rollback()
-            print("Error occurred while deleting animal kategory.")
+            print("Error occurred while deleting animal category.")
 
 
-    def get_animalkat_by_id(self, animalkat_id):
-        sql = "SELECT kategory FROM animalkat WHERE animalkat_id = %s"
+    def get_animalcat_by_id(self, animalcat_id):
+        sql = "SELECT category FROM animalcat WHERE animalcat_id = %s"
         try:
-            self.cur.execute(sql, (animalkat_id,))
+            self.cur.execute(sql, (animalcat_id,))
             result = self.cur.fetchone()
             if result:
                 return result[0]
@@ -203,7 +203,7 @@ class zooApp(ConfigReader):
                 return "N/A"
         except psycopg2.Error as e:
             logging.error(e)
-            print("Error occurred while retrieving animal kategory.")
+            print("Error occurred while retrieving animal category.")
             return "N/A"
 
 
@@ -220,10 +220,10 @@ class zooApp(ConfigReader):
             return []
 
 
-    def add_animalbreed(self, breed, animalkat_id):
-        sql = "INSERT INTO animalbreed (breed, animalkat_id) VALUES (%s, %s) RETURNING animalbreed_id"
+    def add_animalbreed(self, breed, animalcat_id):
+        sql = "INSERT INTO animalbreed (breed, animalcat_id) VALUES (%s, %s) RETURNING animalbreed_id"
         try:
-            self.cur.execute(sql, (breed, animalkat_id))
+            self.cur.execute(sql, (breed, animalcat_id))
             self.conn.commit()
             animalbreed_id = self.cur.fetchone()[0]
             print(f"Animal breed with ID {animalbreed_id} added successfully.")
@@ -233,10 +233,10 @@ class zooApp(ConfigReader):
             print("Error occurred while adding animal breed.")
 
 
-    def edit_animalbreed(self, animalbreed_id, breed, animalkat_id):
-        sql = "UPDATE animalbreed SET breed = %s, animalkat_id = %s WHERE animalbreed_id = %s"
+    def edit_animalbreed(self, animalbreed_id, breed, animalcat_id):
+        sql = "UPDATE animalbreed SET breed = %s, animalcat_id = %s WHERE animalbreed_id = %s"
         try:
-            self.cur.execute(sql, (breed, animalkat_id, animalbreed_id))
+            self.cur.execute(sql, (breed, animalcat_id, animalbreed_id))
             self.conn.commit()
             print(f"Animal breed with ID {animalbreed_id} updated successfully.")
         except psycopg2.Error as e:
@@ -258,7 +258,7 @@ class zooApp(ConfigReader):
 
 
     def get_animalbreed_by_id(self, animalbreed_id):
-        sql = "SELECT breed, animalkat_id FROM animalbreed WHERE animalbreed_id = %s"
+        sql = "SELECT breed, animalcat_id FROM animalbreed WHERE animalbreed_id = %s"
         try:
             self.cur.execute(sql, (animalbreed_id,))
             result = self.cur.fetchone()
@@ -412,13 +412,14 @@ class zooApp(ConfigReader):
             return []
 
 
-    #filter function for animal breeds by animal kategories
+
+    #filter function for animal breeds by animal categorys
     def filter_breeds_by_category(self, category):
         sql = """
             SELECT animalbreed.breed
             FROM animalbreed
-            JOIN animalkat ON animalbreed.animalkat_id = animalkat.animalkat_id
-            WHERE animalkat.kategory = %s
+            JOIN animalcat ON animalbreed.animalcat_id = animalcat.animalcat_id
+            WHERE animalcat.name = %s
         """
         try:
             self.cur.execute(sql, (category,))
@@ -428,6 +429,7 @@ class zooApp(ConfigReader):
             logging.error(e)
             print("Error occurred while filtering breeds by category.")
             return []
+
    
 
     
